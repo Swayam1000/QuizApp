@@ -1,0 +1,130 @@
+:root {
+  --bg-cream: #f6f0e8;
+  --bg-paper: #fffdf8;
+  --ink: #1f1a17;
+  --ink-soft: #5f574f;
+  --accent: #d97706;
+  --accent-deep: #b45309;
+  --mint: #0f766e;
+  --card-border: #e7dfd4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  background-color: var(--bg-cream);
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(217, 119, 6, 0.13), transparent 38%),
+    radial-gradient(circle at 90% 5%, rgba(15, 118, 110, 0.10), transparent 32%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0));
+}
+
+h1,
+h2,
+h3,
+.display-font {
+  font-family: "Fraunces", Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+.quiz-shell {
+  position: relative;
+}
+
+.quiz-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image: radial-gradient(#6b5a4d 0.55px, transparent 0.55px);
+  background-size: 4px 4px;
+}
+
+.glass-card {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.62));
+  border: 1px solid var(--card-border);
+  box-shadow: 0 18px 35px rgba(28, 25, 23, 0.09);
+  backdrop-filter: blur(8px);
+}
+
+.pill-badge {
+  border: 1px solid #e2d6c8;
+  background: rgba(255, 251, 245, 0.8);
+  border-radius: 999px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--ink), #29201b);
+  border: 1px solid #3a2f28;
+  color: #fff;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(31, 26, 23, 0.28);
+}
+
+.btn-accent {
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+  color: #fff;
+  border: 1px solid #92400e;
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-in {
+  animation: riseIn 380ms ease both;
+}
+
+.leaderboard-podium {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(246, 240, 232, 0.95));
+  border: 1px solid #e7dfd4;
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.07);
+}
+
+.leaderboard-podium-first {
+  background: linear-gradient(160deg, rgba(255, 235, 200, 0.95), rgba(255, 247, 232, 0.98));
+  border: 1px solid #f0bf73;
+  box-shadow: 0 18px 30px rgba(180, 83, 9, 0.18);
+}
+
+.leaderboard-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #e8e0d6;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 14px;
+  padding: 12px 14px;
+  overflow: hidden;
+}
+
+.leaderboard-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: linear-gradient(90deg, rgba(217, 119, 6, 0.16), rgba(245, 158, 11, 0.1));
+  transition: width 360ms ease;
+}
+
+::selection {
+  background: rgba(217, 119, 6, 0.2);
+  color: #2a1702;
+}

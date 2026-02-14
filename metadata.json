@@ -1,0 +1,5 @@
+{
+  "name": "GeminiQuiz Live",
+  "description": "A Mentimeter-style real-time quiz platform. Features static, pre-defined questions with image and video support. Includes a Host View (Dashboard/QR Code) and a Player View (Mobile-friendly). Uses PeerJS for real-time communication.",
+  "requestFramePermissions": []
+}
