@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, Tooltip } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, Tooltip, CartesianGrid, LabelList } from 'recharts';
 import { GameState, GameStatus, Player } from '../types';
 import { Users, ArrowRight, RotateCcw, Award, CheckCircle2, ExternalLink, Smartphone, Copy, Loader2, Settings, Globe, Maximize2, X } from 'lucide-react';
 
@@ -57,14 +57,23 @@ export const HostView: React.FC<HostViewProps> = ({ gameState, hostId, onNext, o
       }
     });
 
-    return currentQuestion.options.map((opt, index) => ({
-      name: String.fromCharCode(65 + index),
+    return currentQuestion.options.map((opt, index) => {
+      const lower = opt.text.toLowerCase();
+      const semanticColor = lower.includes('human') ? '#0f766e' : lower.includes('ai') ? '#b45309' : '#44403c';
+      return {
+      name: opt.text,
       text: opt.text,
       votes: counts[opt.id],
       isCorrect: opt.isCorrect,
-      id: opt.id
-    }));
+      id: opt.id,
+      semanticColor
+    }});
   }, [gameState.players, currentQuestion]);
+
+  const totalVotes = useMemo(
+    () => chartData.reduce((sum, entry) => sum + entry.votes, 0),
+    [chartData]
+  );
 
   // Construct the Join URL
   const joinUrl = hostId && baseUrl
@@ -424,8 +433,14 @@ export const HostView: React.FC<HostViewProps> = ({ gameState, hostId, onNext, o
                const letter = String.fromCharCode(65 + i);
                const isReveal = gameState.status === GameStatus.QUESTION_REVEAL;
                const isCorrect = opt.isCorrect;
+               const lower = opt.text.toLowerCase();
+               const semanticClass = lower.includes('human')
+                ? 'from-teal-50 to-emerald-50 border-teal-200'
+                : lower.includes('ai')
+                ? 'from-amber-50 to-orange-50 border-amber-200'
+                : 'from-stone-50 to-stone-50 border-stone-200';
                
-               let styleClass = "border-stone-200 bg-white";
+               let styleClass = `bg-gradient-to-br ${semanticClass}`;
                if (isReveal && isCorrect) styleClass = "border-emerald-500 bg-emerald-50";
                if (isReveal && !isCorrect) styleClass = "border-stone-200 opacity-50";
 
@@ -434,7 +449,7 @@ export const HostView: React.FC<HostViewProps> = ({ gameState, hostId, onNext, o
                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold text-xl mr-4 ${isReveal && isCorrect ? 'bg-emerald-600 text-white' : 'bg-stone-100 text-stone-500'}`}>
                      {letter}
                    </div>
-                   <span className="text-lg md:text-xl font-medium text-stone-800">{opt.text}</span>
+                   <span className="text-lg md:text-xl font-semibold text-stone-800">{opt.text}</span>
                    {isReveal && isCorrect && <CheckCircle2 className="ml-auto text-emerald-600 w-6 h-6" />}
                  </div>
                );
@@ -445,24 +460,36 @@ export const HostView: React.FC<HostViewProps> = ({ gameState, hostId, onNext, o
 
         {/* Right: Real-time Chart */}
         <div className="flex-1 glass-card rounded-3xl p-8 flex flex-col">
+           <div className="mb-4 flex items-center justify-between">
+             <div>
+               <p className="text-xs uppercase tracking-[0.14em] text-stone-500">Live Vote Pulse</p>
+               <p className="text-2xl display-font font-bold text-stone-900">Audience Responses</p>
+             </div>
+             <div className="pill-badge px-4 py-2">
+               <p className="text-xs uppercase tracking-[0.14em] text-stone-500">Total Votes</p>
+               <p className="text-xl font-black text-stone-900 text-center">{totalVotes}</p>
+             </div>
+           </div>
            <div className="flex-1 min-h-[300px]">
              <ResponsiveContainer width="100%" height="100%">
-               <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                  <XAxis dataKey="name" stroke="#a8a29e" tick={{ fontSize: 14, fontWeight: 'bold' }} axisLine={false} tickLine={false} />
-                  <YAxis hide />
+               <BarChart data={chartData} margin={{ top: 20, right: 30, left: 8, bottom: 5 }}>
+                  <CartesianGrid vertical={false} stroke="#e7e5e4" strokeDasharray="3 3" />
+                  <XAxis dataKey="name" stroke="#78716c" tick={{ fontSize: 13, fontWeight: 700 }} axisLine={false} tickLine={false} />
+                  <YAxis allowDecimals={false} stroke="#a8a29e" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} width={24} />
                   <Tooltip 
                     cursor={{ fill: '#f5f5f4' }}
-                    contentStyle={{ backgroundColor: '#1c1917', border: 'none', borderRadius: '8px', color: '#fff' }}
+                    contentStyle={{ backgroundColor: '#1c1917', border: 'none', borderRadius: '10px', color: '#fff' }}
                   />
                   <Bar dataKey="votes" radius={[8, 8, 8, 8]}>
                     {chartData.map((entry, index) => (
                       <Cell 
                         key={`cell-${index}`} 
                         fill={gameState.status === GameStatus.QUESTION_REVEAL 
-                           ? (entry.isCorrect ? '#059669' : '#d6d3d1') // Green or gray
-                           : '#44403c'} // Dark Stone
+                           ? (entry.isCorrect ? '#059669' : '#d6d3d1')
+                           : entry.semanticColor}
                       />
                     ))}
+                    <LabelList dataKey="votes" position="top" fill="#44403c" fontSize={12} fontWeight={800} />
                   </Bar>
                </BarChart>
              </ResponsiveContainer>

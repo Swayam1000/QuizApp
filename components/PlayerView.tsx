@@ -134,14 +134,6 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ gameState, playerId, isC
       );
   }
 
-  const letters = ['A', 'B', 'C', 'D'];
-  const colors = [
-    'bg-red-500 hover:bg-red-400',
-    'bg-blue-500 hover:bg-blue-400',
-    'bg-yellow-500 hover:bg-yellow-400',
-    'bg-green-500 hover:bg-green-400'
-  ];
-
   if (gameState.status === GameStatus.QUESTION_REVEAL) {
       const myAnswerId = player.lastAnswer;
       const correctOptionId = currentQuestion.options.find(o => o.isCorrect)?.id;
@@ -187,18 +179,33 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ gameState, playerId, isC
              </h2>
         </div>
         
-        <div className="grid grid-cols-2 gap-4 flex-1 max-h-[500px] reveal-in">
+        <div className={`grid gap-4 flex-1 max-h-[500px] reveal-in ${currentQuestion.options.length === 2 ? 'grid-cols-1' : 'grid-cols-2'}`}>
           {currentQuestion.options.map((opt, i) => (
-            <button
-              key={opt.id}
-              onClick={() => {
-                setHasSubmitted(true);
-                onAnswer(opt.id);
-              }}
-              className={`${colors[i]} h-full rounded-2xl flex flex-col items-center justify-center p-4 transition-transform active:scale-95 shadow-lg`}
-            >
-              <span className="text-4xl font-black text-white/30 mb-2">{letters[i]}</span>
-            </button>
+            (() => {
+              const optionText = opt.text.trim();
+              const lower = optionText.toLowerCase();
+              const isHuman = lower.includes('human');
+              const isAI = lower === 'ai' || lower.includes(' ai') || lower.includes('ai ');
+              const baseStyle = isHuman
+                ? 'from-teal-600 to-emerald-600 shadow-teal-900/20'
+                : isAI
+                ? 'from-amber-600 to-orange-600 shadow-orange-900/20'
+                : 'from-stone-700 to-stone-600 shadow-stone-900/20';
+
+              return (
+                <button
+                  key={opt.id}
+                  onClick={() => {
+                    setHasSubmitted(true);
+                    onAnswer(opt.id);
+                  }}
+                  className={`h-full min-h-[140px] rounded-2xl flex flex-col items-start justify-center px-6 py-5 text-left transition-transform active:scale-[0.98] shadow-xl bg-gradient-to-br ${baseStyle}`}
+                >
+                  <span className="text-xs uppercase tracking-[0.14em] text-white/70 font-semibold mb-2">Tap to vote</span>
+                  <span className="text-3xl md:text-4xl font-black text-white display-font leading-tight">{optionText}</span>
+                </button>
+              );
+            })()
           ))}
         </div>
       </div>
