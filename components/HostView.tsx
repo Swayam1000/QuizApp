@@ -1,18 +1,19 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, Tooltip, CartesianGrid, LabelList } from 'recharts';
 import { GameState, GameStatus, Player } from '../types';
-import { Users, ArrowRight, RotateCcw, Award, CheckCircle2, ExternalLink, Smartphone, Copy, Loader2, Settings, Globe, Maximize2, X } from 'lucide-react';
+import { Users, ArrowRight, RotateCcw, Award, CheckCircle2, ExternalLink, Smartphone, Copy, Loader2, Settings, Globe, Maximize2, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface HostViewProps {
   gameState: GameState;
   hostId: string; // Peer ID
   onNext: () => void;
+  onGoToQuestion: (index: number) => void;
   onReset: () => void;
   onToggleSimulator: () => void;
   showSimulator: boolean;
 }
 
-export const HostView: React.FC<HostViewProps> = ({ gameState, hostId, onNext, onReset, onToggleSimulator, showSimulator }) => {
+export const HostView: React.FC<HostViewProps> = ({ gameState, hostId, onNext, onGoToQuestion, onReset, onToggleSimulator, showSimulator }) => {
   const currentQuestion = gameState.questions[gameState.currentQuestionIndex];
   const playerCount = Object.keys(gameState.players).length;
   
@@ -380,6 +381,38 @@ export const HostView: React.FC<HostViewProps> = ({ gameState, hostId, onNext, o
   return (
     <div className="quiz-shell min-h-screen bg-[#f6f0e8] flex flex-col text-stone-900">
       {renderHeader()}
+      <div className="max-w-7xl mx-auto w-full px-4 md:px-8 pt-4">
+        <div className="glass-card rounded-xl p-2 md:p-3 flex items-center gap-2 md:gap-3">
+          <button
+            onClick={() => onGoToQuestion(gameState.currentQuestionIndex - 1)}
+            disabled={gameState.currentQuestionIndex <= 0}
+            className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-white border border-stone-200 text-stone-700 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Prev
+          </button>
+          <div className="text-xs uppercase tracking-[0.14em] text-stone-500 pl-1">Question</div>
+          <select
+            value={gameState.currentQuestionIndex}
+            onChange={(e) => onGoToQuestion(Number(e.target.value))}
+            className="bg-white border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-800 focus:outline-none focus:border-stone-400"
+          >
+            {gameState.questions.map((_, idx) => (
+              <option key={idx} value={idx}>
+                {idx + 1}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={() => onGoToQuestion(gameState.currentQuestionIndex + 1)}
+            disabled={gameState.currentQuestionIndex >= gameState.questions.length - 1}
+            className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-white border border-stone-200 text-stone-700 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Next
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
 
       <div className="flex-1 flex flex-col md:flex-row max-w-7xl mx-auto w-full p-4 md:p-8 gap-8">
         

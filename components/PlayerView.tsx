@@ -175,7 +175,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ gameState, playerId, isC
             </div>
             <h2 className="text-4xl font-black text-white mb-2">{isCorrect ? 'Correct!' : 'Wrong!'}</h2>
             <p className="text-white/90 font-medium text-lg">
-                {isCorrect ? `+${100} points` : 'Better luck next time'}
+                {isCorrect ? `+${10} points` : 'Better luck next time'}
             </p>
             <div className="mt-12 text-white/60 text-sm">
                 Wait for the next question...

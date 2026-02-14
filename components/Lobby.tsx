@@ -259,6 +259,14 @@ export const STATIC_QUIZ: Question[] = [
     ],
     websiteLabel: 'Bruno Simon',
     websiteUrl: 'https://bruno-simon.com/'
+  },
+  {
+    id: 'q27',
+    text: 'How was this app built?',
+    options: [
+      { id: 'q27_opt1', text: 'Human', isCorrect: false },
+      { id: 'q27_opt2', text: 'AI', isCorrect: true }
+    ]
   }
 ];
 
@@ -267,7 +275,10 @@ export const Lobby: React.FC<LobbyProps> = ({ onQuizGenerated }) => {
     if (questions.length <= 1) return questions;
 
     const fixedFirst = questions[0];
-    const shuffled = [...questions.slice(1)];
+    const remaining = [...questions.slice(1)];
+    const finalQuestionIndex = remaining.findIndex(q => q.id === 'q27');
+    const finalQuestion = finalQuestionIndex !== -1 ? remaining.splice(finalQuestionIndex, 1)[0] : null;
+    const shuffled = remaining;
 
     // Fisher-Yates shuffle for all questions except Q1.
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -284,7 +295,7 @@ export const Lobby: React.FC<LobbyProps> = ({ onQuizGenerated }) => {
       shuffled.splice(newQ25Index + 1, 0, q24);
     }
 
-    return [fixedFirst, ...shuffled];
+    return finalQuestion ? [fixedFirst, ...shuffled, finalQuestion] : [fixedFirst, ...shuffled];
   };
 
   const handleStart = () => {

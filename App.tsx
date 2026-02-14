@@ -251,7 +251,7 @@ const App: React.FC = () => {
            const isCorrect = p.lastAnswer === correctOptId;
            updatedPlayers[p.id] = {
              ...p,
-             score: isCorrect ? p.score + 100 : p.score
+             score: isCorrect ? p.score + 10 : p.score
            };
         });
 
@@ -272,6 +272,28 @@ const App: React.FC = () => {
         }
       }
       
+      broadcastState(nextState);
+      return nextState;
+    });
+  };
+
+  const handleGoToQuestion = (targetIndex: number) => {
+    setGameState(prev => {
+      if (!prev.questions.length) return prev;
+
+      const boundedIndex = Math.max(0, Math.min(targetIndex, prev.questions.length - 1));
+      const resetPlayers: Record<string, Player> = {};
+      Object.values(prev.players).forEach((p: Player) => {
+        resetPlayers[p.id] = { ...p, lastAnswer: undefined };
+      });
+
+      const nextState: GameState = {
+        ...prev,
+        currentQuestionIndex: boundedIndex,
+        status: GameStatus.QUESTION_ACTIVE,
+        players: resetPlayers
+      };
+
       broadcastState(nextState);
       return nextState;
     });
@@ -346,6 +368,7 @@ const App: React.FC = () => {
           gameState={gameState} 
           hostId={myPeerId} // Pass peer ID to HostView for QR code
           onNext={handleNextStage} 
+          onGoToQuestion={handleGoToQuestion}
           onReset={handleReset}
           onToggleSimulator={() => setShowSimulator(!showSimulator)}
           showSimulator={showSimulator}
