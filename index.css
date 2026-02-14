@@ -34,6 +34,13 @@ h3,
   letter-spacing: -0.02em;
 }
 
+/* Force consistency even when Tailwind font utility classes are used. */
+.font-sans,
+.font-serif,
+.font-mono {
+  font-family: var(--font-main) !important;
+}
+
 .quiz-shell {
   position: relative;
 }
