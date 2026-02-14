@@ -309,12 +309,6 @@ export const Lobby: React.FC<LobbyProps> = ({ onQuizGenerated }) => {
           <p className="text-base md:text-lg text-stone-600">Game is on between Humans and AI</p>
         </div>
 
-        <div className="pill-badge p-5 rounded-2xl">
-          <p className="text-stone-700 font-semibold">
-            Ready to host? There are <strong>{STATIC_QUIZ.length}</strong> questions pre-loaded.
-          </p>
-        </div>
-
         <button
           onClick={handleStart}
           className="w-full group relative overflow-hidden btn-accent rounded-2xl py-5 font-bold text-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 active:translate-y-0 tracking-tight"

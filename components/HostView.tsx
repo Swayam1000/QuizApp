@@ -333,6 +333,22 @@ export const HostView: React.FC<HostViewProps> = ({ gameState, hostId, onNext, o
             </div>
           </div>
 
+          <div className="glass-card rounded-3xl p-5 md:p-7 text-left space-y-3">
+            <h3 className="text-2xl display-font font-bold text-stone-900">Why I built this:</h3>
+            <p className="text-stone-700">
+              At our audience size, free tiers were too constrained, and paid tiers did not justify the cost for a simple use case.
+            </p>
+            <p className="text-stone-700">
+              So I built a lightweight version in about 3 hours.
+            </p>
+            <p className="text-stone-700">
+              I saved at least $20, and I can reuse this anytime.
+            </p>
+            <p className="text-stone-900 font-bold text-lg">
+              The point: You can just build stuff.
+            </p>
+          </div>
+
           <button
             onClick={onReset}
             className="flex items-center gap-2 mx-auto px-8 py-3 rounded-full btn-primary transition-colors shadow-lg"
