@@ -146,10 +146,10 @@ export const HostView: React.FC<HostViewProps> = ({ gameState, hostId, onNext, o
               <p className="text-stone-500">Connecting to Game Network...</p>
             </div>
           ) : (
-            <div className="flex flex-col lg:flex-row items-stretch justify-center gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-[460px_minmax(0,1fr)] items-start justify-center gap-8">
               {/* QR Code Card */}
-              <div className="flex-1 glass-card p-12 rounded-3xl flex flex-col items-center justify-center gap-6 relative overflow-hidden group">
-                 <div className="relative w-[500px] h-[500px] bg-white rounded-xl p-4 shadow-inner border border-stone-100">
+              <div className="glass-card p-8 rounded-3xl flex flex-col items-center justify-center gap-6 relative overflow-hidden group">
+                 <div className="relative w-[320px] h-[320px] md:w-[420px] md:h-[420px] bg-white rounded-xl p-4 shadow-inner border border-stone-100">
                    {/* eslint-disable-next-line @next/next/no-img-element */}
                    <img 
                       src={qrCodeUrl} 
@@ -165,7 +165,7 @@ export const HostView: React.FC<HostViewProps> = ({ gameState, hostId, onNext, o
               </div>
 
               {/* Methods Card */}
-              <div className="flex-1 glass-card p-8 rounded-3xl flex flex-col justify-center gap-6 text-left">
+              <div className="glass-card p-6 md:p-8 rounded-3xl flex flex-col gap-5 text-left">
                 
                 {/* Network Status / URL */}
                 <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-4">
@@ -207,7 +207,7 @@ export const HostView: React.FC<HostViewProps> = ({ gameState, hostId, onNext, o
                    )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 mt-auto">
+                <div className="grid grid-cols-2 gap-3">
                    <button 
                     onClick={openPlayerView}
                     className="flex flex-col items-center justify-center gap-2 py-4 bg-stone-50 hover:bg-stone-100 rounded-xl transition-all border border-stone-200"
@@ -233,6 +233,10 @@ export const HostView: React.FC<HostViewProps> = ({ gameState, hostId, onNext, o
                     <p className="text-2xl font-bold text-stone-900 leading-none">{playerCount}</p>
                     <p className="text-xs text-stone-400 uppercase tracking-wide font-bold mt-1">Players Ready</p>
                   </div>
+                </div>
+
+                <div className="text-xs text-stone-500 bg-white/60 border border-stone-200 rounded-xl px-4 py-3">
+                  Tip: open the website in full screen and keep this join screen visible before starting.
                 </div>
               </div>
             </div>
