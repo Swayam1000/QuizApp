@@ -122,11 +122,19 @@ const App: React.FC = () => {
   const handleHostReceiveData = (event: ChannelEvent) => {
     if (event.type === 'PLAYER_JOIN') {
       setGameState(prev => {
+        const duplicateName = Object.values(prev.players).some(
+          p => p.name === event.payload.name && p.id !== event.payload.id
+        );
+        if (duplicateName) return prev;
+
+        const existingPlayer = prev.players[event.payload.id];
         const newState = {
           ...prev,
           players: {
             ...prev.players,
-            [event.payload.id]: { id: event.payload.id, name: event.payload.name, score: 0 }
+            [event.payload.id]: existingPlayer
+              ? { ...existingPlayer, name: event.payload.name }
+              : { id: event.payload.id, name: event.payload.name, score: 0 }
           }
         };
         broadcastState(newState);

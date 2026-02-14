@@ -10,6 +10,16 @@ interface PlayerViewProps {
   onAnswer: (optionId: string) => void;
 }
 
+const NAME_OPTIONS = [
+  'Kalgi',
+  'Nikhil',
+  'Vasudha',
+  'Madhura',
+  'Maarten',
+  'Atharva',
+  'Pragya'
+];
+
 export const PlayerView: React.FC<PlayerViewProps> = ({ gameState, playerId, isConnected, onJoin, onAnswer }) => {
   const [name, setName] = useState('');
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -45,6 +55,10 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ gameState, playerId, isC
 
   // 1. Join Screen
   if (!player) {
+    const takenNames = new Set(
+      Object.values(gameState.players).map((p: Player) => p.name)
+    );
+
     return (
       <div className="quiz-shell min-h-screen bg-[#f6f0e8] flex items-center justify-center p-6 text-stone-900">
         <div className="w-full max-w-sm space-y-8 glass-card p-7 rounded-3xl">
@@ -52,28 +66,43 @@ export const PlayerView: React.FC<PlayerViewProps> = ({ gameState, playerId, isC
             <h1 className="text-3xl font-bold display-font text-stone-900 mb-2">
               Building Superagency
             </h1>
-            <p className="text-stone-500">Enter your nickname to join</p>
+            <p className="text-stone-500">Pick your name to join</p>
           </div>
           
           <form 
             onSubmit={(e) => { e.preventDefault(); onJoin(name); }}
             className="space-y-4"
           >
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Nickname"
-              className="w-full bg-white border-2 border-stone-200 rounded-2xl px-6 py-4 text-center text-xl font-bold text-stone-900 focus:border-stone-500 focus:outline-none transition-colors shadow-sm"
-              maxLength={12}
-              required
-            />
+            <div className="grid grid-cols-2 gap-3">
+              {NAME_OPTIONS.map((option) => {
+                const isTaken = takenNames.has(option);
+                const isSelected = name === option;
+
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => setName(option)}
+                    disabled={isTaken}
+                    className={`rounded-xl px-3 py-3 text-sm font-semibold border transition-all ${
+                      isTaken
+                        ? 'bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed'
+                        : isSelected
+                        ? 'bg-amber-600 text-white border-amber-600 shadow'
+                        : 'bg-white text-stone-700 border-stone-200 hover:border-stone-300'
+                    }`}
+                  >
+                    {option}
+                  </button>
+                );
+              })}
+            </div>
             <button 
               type="submit"
-              disabled={!name.trim()}
+              disabled={!name || takenNames.has(name)}
               className="w-full btn-primary font-bold py-4 rounded-2xl shadow-lg hover:scale-105 transition-all disabled:opacity-50 disabled:shadow-none disabled:hover:scale-100"
             >
-              Join Game
+              Continue
             </button>
           </form>
         </div>
