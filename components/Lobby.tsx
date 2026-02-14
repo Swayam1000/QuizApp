@@ -299,24 +299,25 @@ export const Lobby: React.FC<LobbyProps> = ({ onQuizGenerated }) => {
         <div className="absolute bottom-[-10%] right-[-10%] w-[42%] h-[42%] bg-teal-200 rounded-full blur-3xl opacity-35"></div>
       </div>
 
-      <div className="max-w-2xl w-full glass-card rounded-[2rem] p-8 md:p-12 relative z-10 text-center space-y-8 reveal-in">
-        <div>
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-amber-600 to-amber-700 mb-6 shadow-xl shadow-amber-700/20">
+      <div className="max-w-2xl w-full glass-card hero-panel p-8 md:p-12 relative z-10 text-center space-y-8 reveal-in">
+        <div className="space-y-4">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-amber-600 to-amber-700 mb-2 shadow-xl shadow-amber-700/20">
             <Brain className="w-10 h-10 text-stone-100" />
           </div>
-          <h1 className="text-5xl md:text-6xl display-font font-extrabold text-stone-900 mb-3 tracking-tight">Building Superagency</h1>
-          <p className="text-lg md:text-xl text-stone-600">Game is on between Humans and AI</p>
+          <p className="text-xs uppercase tracking-[0.18em] text-stone-500">Live Workshop Quiz</p>
+          <h1 className="text-5xl md:text-6xl display-font font-extrabold text-stone-900 hero-title">Building Superagency</h1>
+          <p className="text-base md:text-lg text-stone-600">Game is on between Humans and AI</p>
         </div>
 
-        <div className="pill-badge p-6 rounded-2xl">
-          <p className="text-stone-600 font-medium">
+        <div className="pill-badge p-5 rounded-2xl">
+          <p className="text-stone-700 font-semibold">
             Ready to host? There are <strong>{STATIC_QUIZ.length}</strong> questions pre-loaded.
           </p>
         </div>
 
         <button
           onClick={handleStart}
-          className="w-full group relative overflow-hidden btn-accent rounded-2xl py-5 font-bold text-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 active:translate-y-0"
+          className="w-full group relative overflow-hidden btn-accent rounded-2xl py-5 font-bold text-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 active:translate-y-0 tracking-tight"
         >
           <div className="relative flex items-center justify-center gap-3">
             <Zap className="w-6 h-6 fill-current" />
